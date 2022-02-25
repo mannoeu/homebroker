@@ -1,0 +1,49 @@
+:root {
+  --darken: #181926;
+  --dark: #1a1d33;
+  --white: #dfe1e2;
+
+  --text-primary: #ebebee;
+  --text-secondary: #5f618f;
+
+  --pink: #fe237b;
+  --red: #ef3b4b;
+  --purple: #4f1fff;
+  --blue: #269eff;
+
+  --font: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  position: relative;
+  font-weight: normal;
+  outline: none;
+
+  font-family: var(--font);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  color: var(--white);
+  background: var(--darken);
+  transition: color 0.5s, background-color 0.5s;
+
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+button {
+  cursor: pointer;
+}
+
+input,
+button,
+textarea {
+  font-family: var(--font);
+}
