@@ -1,52 +1,19 @@
 <template>
   <main>
-    <div v-if="!loaded">Carregando...</div>
-    <div v-if="!!error">{{ error }}</div>
+    <Loading v-if="!loaded" />
+    <Error v-if="loaded && !!error" :error="error" />
+    <NotFound v-if="loaded && !error && !result" />
     <article class="ticket" v-if="loaded && !!result">
       <header class="ticket-info">
         <vue-feather type="activity" />
-
         <div class="text">
           <h1>{{ informations?.ticket }}</h1>
           <p>{{ informations?.empresa }}</p>
         </div>
       </header>
-
       <ul>
         <li class="data-item" :key="item?.id" v-for="item in result">
-          <article>
-            <p class="data-item-text">
-              {{ item?.moeda_ref }} {{ formatMoney(item?.vl_abertura) }}
-              <span>Abertura</span>
-            </p>
-            <p class="data-item-text">
-              {{ item?.moeda_ref }} {{ formatMoney(item?.vl_fechamento) }}
-              <span>Fechamento</span>
-            </p>
-
-            <p class="data-item-text">
-              {{ item?.moeda_ref }} {{ formatMoney(item?.vl_maximo) }}
-              <span>Máximo</span>
-            </p>
-            <p class="data-item-text">
-              {{ item?.moeda_ref }} {{ formatMoney(item?.vl_minimo) }}
-              <span>Mínimo</span>
-            </p>
-            <p class="data-item-text">
-              {{ item?.moeda_ref }}
-              {{ formatMoney(item?.vl_mlh_oft_compra) }}
-              <span>Melhor oferta de compra</span>
-            </p>
-            <p class="data-item-text">
-              {{ item?.moeda_ref }}
-              {{ formatMoney(item?.vl_mlh_oft_venda) }}
-              <span>Melhor oferta de venda</span>
-            </p>
-          </article>
-          <p class="total-volume">
-            <vue-feather class="text_icon_default" type="tag" />
-            <span>{{ formatDate(item?.created_at) }}</span>
-          </p>
+          <QuoteDetail :item="item" />
         </li>
       </ul>
     </article>
@@ -54,7 +21,13 @@
 </template>
 
 <script>
+import QuoteDetail from "@/components/QuoteDetail.vue";
+import NotFound from "@/components/NotFound.vue";
+import Loading from "@/components/Loading.vue";
+import Error from "@/components/Error.vue";
+
 export default {
+  name: "ResultView",
   data() {
     return {
       result: null,
@@ -63,23 +36,35 @@ export default {
       error: null,
     };
   },
+  components: {
+    QuoteDetail,
+    NotFound,
+    Loading,
+    Error,
+  },
   methods: {
     getData() {
       this.loaded = false;
       this.error = null;
-      this.informations = null;
 
       this.result = fetch(
         "https://api-cotacao-b3.labdo.it/api/cotacao/cd_acao/" +
-          this.$route.params.ticket
+          this.$route.params.ticket +
+          "/5"
       )
         .then((res) => res.json())
         .then((res) => {
-          this.result = res?.slice(0, 5);
-          this.informations = {
-            empresa: res[0].nm_empresa_rdz,
-            ticket: res[0].cd_acao,
-          };
+          console.log(res?.length);
+          if (res?.length > 0) {
+            this.result = res?.slice(0, 5);
+            this.informations = {
+              empresa: res[0].nm_empresa_rdz,
+              ticket: res[0].cd_acao,
+            };
+          } else {
+            this.result = null;
+            this.informations = null;
+          }
         })
         .catch((error) => {
           this.error = error?.response?.message;
@@ -88,32 +73,12 @@ export default {
           this.loaded = true;
         });
     },
-    formatMoney(value = 0, forcePositive = false) {
-      let result = value;
-      if (typeof value === "string") {
-        let parse = result?.replace(",", ".");
-        result = Number(parse);
-      }
-
-      if (forcePositive) {
-        result = Math.abs(result);
-      }
-
-      return Number(result).toLocaleString("pt-BR", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      });
-    },
-    formatDate(d) {
-      return new Date(d).toLocaleDateString("pt-BR");
-    },
   },
   watch: {
     "$route.params.ticket"() {
       this.getData();
     },
   },
-
   mounted() {
     this.getData();
   },
@@ -176,50 +141,9 @@ article.ticket ul {
   row-gap: 3rem;
 }
 
-li.data-item {
-  display: flex;
-  flex-direction: column;
-}
-
-li.data-item article {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.25rem;
-  margin-bottom: 0.5rem;
-}
-
-@media (max-width: 400px) {
-  li.data-item article {
-    grid-template-columns: 1fr;
+@media (max-width: 480px) {
+  article.ticket ul {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   }
-}
-
-p.data-item-text {
-  padding: 0.25rem;
-  display: flex;
-  flex-direction: column;
-  font-size: 0.875rem;
-  line-height: 1.098rem;
-  color: var(--text-primary);
-  border-bottom: 1px dashed var(--text-secondary);
-}
-p.data-item-text span {
-  font-size: 0.75rem;
-  line-height: 1.025rem;
-  color: var(--text-secondary);
-}
-
-p.total-volume {
-  font-size: 0.875rem;
-  line-height: 1.098rem;
-  display: flex;
-  align-items: center;
-  background: var(--red);
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
-  width: max-content;
-}
-p.total-volume span {
-  margin-left: 0.25rem;
 }
 </style>
