@@ -4,7 +4,7 @@
 
 <p align="center">
   <img  src="https://img.shields.io/badge/development-hybrid-purple" alt="Application Category" />
-  <img  src="https://img.shields.io/badge/language-vuejs-green" alt="Repo Main Language" />
+  <img  src="https://img.shields.io/badge/framework-vuejs-green" alt="Repo Main Language" />
   <img  src="https://img.shields.io/badge/type-project-success" alt="Repo Type" />
 </p>
 
@@ -16,16 +16,10 @@
 
 <br>
 <h3 align="center">💜</h3>
-<p align="center">API utilizada [api-cotacao-b3](https://api-cotacao-b3.labdo.it/)</p>
-<br>
 
-<br>
-<br>
+## API
 
-> _**Note: this application is in PT-BR, but if you know another API in another idiom, feel free to contact me or open an issue to include your language in the App**_
-
-<br>
-<br>
+- [api-cotacao-b3](https://api-cotacao-b3.labdo.it/)
 
 ## Printscreens
 
@@ -39,8 +33,6 @@
 <img src="/src/assets/item_page.jfif" width="500">
 </p>
 
-<br>
-<br>
 <br>
 
 ## Como clonar este projeto
@@ -63,8 +55,6 @@ cd homebroker
 npm install
 ```
 
-<br>
-<br>
 <br>
 <br>
 
