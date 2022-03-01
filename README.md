@@ -4,7 +4,7 @@
 
 <p align="center">
   <img  src="https://img.shields.io/badge/development-hybrid-purple" alt="Application Category" />
-  <img  src="https://img.shields.io/badge/language-vuejs-green" alt="Repo Main Language" />
+  <img  src="https://img.shields.io/badge/framework-vuejs-green" alt="Repo Main Language" />
   <img  src="https://img.shields.io/badge/type-project-success" alt="Repo Type" />
 </p>
 
