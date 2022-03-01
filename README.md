@@ -30,13 +30,13 @@
 ## Printscreens
 
 <p align="center">
-<img src="/assets/home_page.jfif" width="500">
+<img src="/src/assets/home_page.jfif" width="500">
 </p>
 
 ---
 
 <p align="center">
-<img src="/assets/item_page.jfif" width="500">
+<img src="/src/assets/item_page.jfif" width="500">
 </p>
 
 <br>
